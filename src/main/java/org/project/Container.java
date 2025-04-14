@@ -18,5 +18,4 @@ public class Container {
     public static Scanner getScanner() {
         return sc;
     }
-
 }
