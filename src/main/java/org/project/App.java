@@ -27,12 +27,14 @@ public class App {
             switch (rq.getActionCode()){
 
                 case "delete" :
-                    wiseSayingController.remove();
+                    wiseSayingController.remove(rq);
                     break;
                 case "add" :
                     wiseSayingController.add();
+                    break;
                 case "list" :
                     wiseSayingController.list();
+                    break;
                 case "exit" :
                     systemController.exit();
                     system_status = 0;
