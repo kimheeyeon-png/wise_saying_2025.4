@@ -33,4 +33,14 @@ public class Rq {
     public String getParams(String key){
         return params.get(key);
     }
+
+    public int getIntParams(String key, int defaultValue) {
+        try{
+            return Integer.parseInt(getParams(key));
+        }
+        catch (NumberFormatException e){
+            System.out.println("id(정수)를 제대로 입력해주세요.");
+        }
+        return defaultValue;
+    }
 }
