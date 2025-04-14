@@ -1,64 +1,56 @@
 package org.project;
 
-import org.wiseSaying.entity.WiseSaying;
+import org.system.controller.SystemController;
+import org.wiseSaying.controller.WiseSayingController;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class App {
 
-    private Scanner sc;
-
-    App(Scanner sc){
-        this.sc = sc;
+    App() {
     }
 
+    public void run() {
+        SystemController systemController = new SystemController();
+        WiseSayingController wiseSayingController = new WiseSayingController();
 
-    public void run(){
-        System.out.println("== motivation 앱 실행 ==");
-
-        int lastId = 1;
-
-        List<WiseSaying> wiseSayingList = new ArrayList<>();
-
-        while(true){
-
+        System.out.println("== motivation 앱 실행 == ");
+        byte system_status = 1;
+        while (system_status == 1) {
             System.out.print("명령어) ");
-            String cmd = sc.nextLine().trim(); // 혹시 모를 (좌우) 공백 제거 : trim
+            String cmd = Container.getScanner().nextLine().trim();
+            Rq rq = new Rq(cmd);
+            System.out.println(rq.getActionCode());
 
-            if(cmd.equals("add")){
-                System.out.print("명언 : ");
-                String content = sc.nextLine();
-                System.out.print("인물 : ");
-                String person = sc.nextLine();
-                System.out.printf("%d번 명언이 등록되었습니다.\n", lastId);
+            switch (rq.getActionCode()){
 
-                WiseSaying temp = new WiseSaying(lastId, content, person);
-                wiseSayingList.add(temp);
-
-                lastId++;
-            }
-            else if(cmd.equals("list")){
-
-                if (wiseSayingList.size() == 0){
-                    System.out.println("등록된 명언이 없습니다.");
-                }
-                else{
-                    System.out.println("번호  /   이름   /   명언");
-                    System.out.println("=".repeat(30));
-                    Collections.reverse(wiseSayingList);
-                    for (WiseSaying temp : wiseSayingList){
-                        System.out.printf("%d      %s      %s\n", temp.getId(), temp.getPerson(), temp.getContent());
-                    }
-                }
+                case "delete" :
+                    wiseSayingController.remove();
+                    break;
+                case "add" :
+                    wiseSayingController.add();
+                case "list" :
+                    wiseSayingController.list();
+                case "exit" :
+                    systemController.exit();
+                    system_status = 0;
+                    break;
             }
 
-            else if(cmd.equals("exit")){
-                System.out.println("== motivation 앱 종료 ==");
-                break;
-            }
-            else {
-                System.out.println("존재하지 않는 명령어입니다.");
-            }
+//            if (rq.getActionCode().equals("delete")) {
+//                wiseSayingController.remove();
+//            } else if (rq.getActionCode().equals("add")) {
+//                wiseSayingController.add();
+//            } else if (rq.getActionCode().equals("list")) {
+//                wiseSayingController.list();
+//            } else if (rq.getActionCode().equals("exit")) {
+//                systemController.exit();
+//                break;
+//            } else {
+//                System.out.println("존재하지 않는 명령어입니다.");
+//            }
         }
     }
 }
