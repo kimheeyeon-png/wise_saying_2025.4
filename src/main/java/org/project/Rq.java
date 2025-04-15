@@ -43,7 +43,6 @@ public class Rq {
             return Integer.parseInt(getParams(key));
         }
         catch (NumberFormatException e){
-            System.out.println("id(정수)를 제대로 입력해주세요.");
         }
         return defaultValue;
     }

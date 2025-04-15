@@ -5,6 +5,7 @@ import org.project.Rq;
 import org.wiseSaying.entity.WiseSaying;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WiseSayingController {
@@ -41,21 +42,48 @@ public class WiseSayingController {
         }
     }
 
-    public void remove(Rq rq) {
+    public void delete(Rq rq) {
         // 여기서 delete?id=1 의 1번을 찾아서 삭제해야한다. => rq 필요해서 인자를 받음
         int id = rq.getIntParams("id", -1);
 
         if (id == -1) {
             System.out.println("id(정수)를 제대로 입력해주세요.");
+        }else {
+            WiseSaying removeWiseSaying = findById(id);
+            if(removeWiseSaying != null){
+                wiseSayingList.remove(removeWiseSaying);
+                System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
+            }
+            else{
+                System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
+            }
         }
 
-        WiseSaying removeTargetWiseSaying =findById(id);
-        if(removeTargetWiseSaying != null){
-            wiseSayingList.remove(removeTargetWiseSaying);
-            System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
+    }
+
+    public void modify(Rq rq) {
+
+        int id = rq.getIntParams("id", -1);
+        if (id == -1) {
+            System.out.println("id(정수)를 제대로 입력해주세요.");
         }
         else{
-            System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
+            WiseSaying modifyWiseSaying = findById(id);
+
+            if (modifyWiseSaying != null) {
+                System.out.println("명언(기존) : " + modifyWiseSaying.getContent());
+                System.out.println("인물(기존) : " + modifyWiseSaying.getPerson());
+
+                System.out.print("명언 : ");
+                String newContent = Container.getScanner().nextLine();
+                System.out.print("인물 : ");
+                String newPerson = Container.getScanner().nextLine();
+                modifyWiseSaying.setContent(newContent);
+                modifyWiseSaying.setPerson(newPerson);
+                System.out.printf("%d번 명언이 수정되었습니다.\n", modifyWiseSaying.getId());
+            } else {
+                System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
+            }
         }
     }
 
